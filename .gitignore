@@ -1,0 +1,7 @@
+huggingface
+**/**/__pycache__
+.env
+backend/static
+postgres-data
+pgadmin-data
+chromadb/storage

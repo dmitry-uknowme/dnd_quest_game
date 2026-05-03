@@ -1,0 +1,65 @@
+services:
+  backend:
+    build:
+      context: ./backend
+      dockerfile: docker/dev/Dockerfile
+    env_file:
+      - .env
+    volumes:
+      - ./backend:/usr/src/backend
+      - ./chromadb/storage:/usr/src/backend/chroma_storage
+      - ./huggingface:/huggingface
+    ports:
+      - "5000:8000"
+
+  postgres:
+    image: postgres:15
+    # restart: unless-stopped
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER} -d ${POSTGRES_DB}"]
+      interval: 10s
+      retries: 5
+      start_period: 30s
+      timeout: 10s
+    volumes:
+      - ./postgres-data:/var/lib/postgresql/data/pgdata
+    env_file:
+      - .env
+    environment:
+      - PGDATA=/var/lib/postgresql/data/pgdata
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD?Variable not set}
+      - POSTGRES_USER=${POSTGRES_USER?Variable not set}
+      - POSTGRES_DB=${POSTGRES_DB?Variable not set}
+    ports:
+      - "5432:5432"
+
+  pgadmin:
+    # network_mode: host
+    image: dpage/pgadmin4
+    container_name: pgadmin
+    # restart: unless-stopped
+    env_file:
+      - .env
+    environment:
+      - PGADMIN_DEFAULT_EMAIL=${PGADMIN_EMAIL:-admin@example.com}
+      - PGADMIN_DEFAULT_PASSWORD=${PGADMIN_PASSWORD:-admin}
+    ports:
+      - "5050:80"
+    # volumes:
+    #   - ./pgadmin_import:/var/lib/pgadmin/storage/admin_example.com
+    volumes:
+      - ./pgadmin-data:/var/lib/pgadmin
+
+# chromadb:
+#   build:
+#     context: ./chromadb
+#     network: host
+#   volumes:
+#     - "./chromadb/storage:/usr/src/chromadb/storage"
+#   ports:
+#     - "8081:8000"
+
+# chromadb-admin:
+#   image: fengzhichao/chromadb-admin
+#   ports:
+#     - "3001:3001"
