@@ -5,3 +5,5 @@ backend/static
 postgres-data
 pgadmin-data
 chromadb/storage
+node_modules
+dist
