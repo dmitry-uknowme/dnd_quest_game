@@ -1,53 +1,51 @@
 import { ReactNode, useEffect } from "react";
-import Footer from "./footer/Footer";
-import Navbar from "./navbar/Navbar";
 import { cn } from "@/shared/lib/css";
-import TelegramIconButton from "../button/icon/TelegramIconButton";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 
 interface MainLayoutProps {
 	children: ReactNode;
-	footer?: ReactNode;
+	leftSidebar?: ReactNode;
+	rightSidebar?: ReactNode;
+	header?: ReactNode;
 	className?: string;
-	dataBrand?: string;
-	activeNavItem?: string | null;
 }
 
 const MainLayout: React.FC<MainLayoutProps> = ({
 	children,
+	leftSidebar,
+	rightSidebar,
+	header,
 	className,
-	dataBrand = "ituporg",
-	footer,
-	activeNavItem,
 }) => {
-	const { pathname, hash } = useLocation();
-	const navigate = useNavigate();
+	const { pathname } = useLocation();
 
 	useEffect(() => {
 		window.scrollTo(0, 0);
 	}, [pathname]);
 
-	useEffect(() => {
-		// const hashElement = document.querySelector(`${hash}`);
-		// if (hash) {
-		// 	navigate({ pathname, hash: undefined });
-		// }
-		// console.log({ hashElement });
-		// if (hash && hashElement) {
-		// 	hashElement.scrollIntoView();
-		// } else {
-		window.scrollTo(0, 0);
-		// }
-	}, []);
 	return (
-		<div className={cn("app", className)} data-brand={dataBrand ?? undefined} tabIndex={0}>
-			<TelegramIconButton className="fixed size12! md:size-15! md:bottom-[92px] bottom-[50px] md:right-[80px] right-4 z-50 text-primary" />
-			<Navbar
-				className="relative md:fixed container top-0 left-0 md:top-[22px] md:left-[50%] md:translate-x-[-50%] z-50 md:pr-15 md:pl-15"
-				activeNavItem={activeNavItem}
-			/>
-			{children}
-			{footer === null ? null : footer ?? <Footer />}
+		<div className={cn("grid grid-cols-[280px_1fr_280px] grid-rows-[auto_1fr] h-screen bg-background text-foreground overflow-hidden", className)}>
+			{/* Header Slot */}
+			<header className="col-span-3 h-14 border-b border-border/50 bg-card/40 backdrop-blur-md z-50 flex items-center px-6 justify-between">
+				{header || <div className="font-bold text-primary tracking-wider">STORY FORGE</div>}
+			</header>
+
+			{/* Left Sidebar Slot */}
+			<aside className="w-[280px] border-r border-border/50 bg-card/40 backdrop-blur-md overflow-y-auto p-4 flex flex-col gap-6 custom-scrollbar">
+				{leftSidebar}
+			</aside>
+
+			{/* Main Content Area */}
+			<main className="flex-1 overflow-y-auto relative p-6 custom-scrollbar bg-[radial-gradient(circle_at_center,rgba(179,80,255,0.05)_0%,transparent_70%)]">
+				<div className="max-w-4xl mx-auto">
+					{children}
+				</div>
+			</main>
+
+			{/* Right Sidebar Slot */}
+			<aside className="w-[280px] border-l border-border/50 bg-card/40 backdrop-blur-md overflow-y-auto p-4 flex flex-col gap-6 custom-scrollbar">
+				{rightSidebar}
+			</aside>
 		</div>
 	);
 };
