@@ -1,0 +1,56 @@
+.navbar {
+    background: var(--dark);
+    display: flex;
+    gap: 0.5rem;
+    justify-content: space-between;
+    align-items: center;
+    height: 3.75rem;
+    padding: 0 1.125rem;
+    border-radius: 5rem;
+    transition: all 0.3s;
+    border: 1px solid rgba(255,255,255,0.1);
+
+    .logo {
+        width: 3.5rem;
+    }
+
+    &Items {
+        display: flex;
+        gap: 2.5rem;
+        align-items: center;
+    }
+
+    &Item {
+        transition: all 0.3s;
+        &:hover {
+            color: var(--primary);
+        }
+    }
+
+    .burgerBtn {
+        display: none;
+    }
+
+    .contactBtn {
+        display: block;
+    }
+}
+
+@media screen and (max-width: 768px) {
+    .navbar {
+        background: transparent;
+        border: none;
+
+        &Items {
+            display: none;
+        }
+
+        .burgerBtn {
+            display: block;
+        }
+
+        .contactBtn {
+            display: none;
+        }
+    }
+}

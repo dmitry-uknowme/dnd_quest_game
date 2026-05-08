@@ -1,0 +1,65 @@
+<script>
+  const roomId = "room123";
+  const token = "player_1" + Math.random().toFixed(3);
+
+  let players = [];
+
+  const ws = new WebSocket(
+    `ws://localhost:5000/playroom/${roomId}/websocket?token=${token}`,
+  );
+
+  ws.onopen = () => {
+    console.log("WebSocket connected");
+    // players.push(token);
+
+    // отправка сообщения
+    ws.send(
+      JSON.stringify({
+        type: "PING",
+        message: "Hello server",
+      }),
+    );
+  };
+
+  ws.onmessage = (event) => {
+    console.log("Message from server:", event.data);
+
+    try {
+      const data = JSON.parse(event.data);
+      console.log("Parsed:", data);
+      //   if (data.event == "ROOM:PLAYER_CONNECTED") {
+      //     players.push(data.player_id);
+      //   }
+      //   if (data.event == "ROOM:PLAYER_DISCONNECTED") {
+      //     players.pop(data.player_id);
+      //   }
+      if (data.event == "ROOM:CONNECTION_UPDATED") {
+        players = data.active_players;
+      }
+
+      console.log("Players:", players);
+    } catch (e) {
+      console.log("Raw:", event.data);
+    }
+  };
+
+  ws.onclose = (event) => {
+    console.log("WebSocket closed", event);
+  };
+
+  ws.onerror = (error) => {
+    console.error("WebSocket error:", error);
+  };
+
+  // пример отправки позже
+  function sendMessage() {
+    if (ws.readyState === WebSocket.OPEN) {
+      ws.send(
+        JSON.stringify({
+          type: "CHAT",
+          text: "test message",
+        }),
+      );
+    }
+  }
+</script>

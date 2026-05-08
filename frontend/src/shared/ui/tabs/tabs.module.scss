@@ -1,0 +1,108 @@
+.tabs {
+	display: flex;
+	align-items: center;
+	gap: 1.25rem;
+
+	&._button_light,
+	&._button_primary {
+		border: 1px solid #292b33;
+		padding: 0.625rem;
+		border-radius: 80px;
+	}
+
+	&._clip_path_main,
+	&._clip_path_overlay {
+		gap: 0; // Use container padding or margin if needed, but for pills usually gap is 0 or inherited from Navbar
+	}
+}
+
+.tab {
+	background: transparent;
+	color: var(--dark-foreground);
+	border-radius: 0.5rem;
+	border: 1px solid rgba(181, 181, 191, 0.1);
+	height: 1.625rem;
+	padding: 0 0.5rem;
+	display: flex;
+	align-items: center;
+	white-space: nowrap;
+	font-size: 0.875rem;
+	font-weight: 500;
+	transition: all 0.3s;
+
+	&:not([data-state="active"]) {
+		cursor: pointer;
+	}
+
+	&:hover:not([data-state="active"]):not(._clip_path) {
+		background: rgba(248, 248, 248, 0.1);
+	}
+
+	&[data-state="active"]:not(._clip_path) {
+		background: var(--primary);
+		color: var(--foreground);
+		border: 1px solid var(--primary);
+	}
+
+	&._button_light,
+	&._button_primary {
+		font-weight: 600;
+		font-size: 1rem;
+		// width: fit-content;
+		height: 2.5rem;
+		padding: 0 1.125rem;
+		border-radius: 1.125rem;
+		display: flex;
+		justify-content: center;
+		gap: 0.5rem;
+		align-items: center;
+		border-color: transparent;
+	}
+
+	&._button_light[data-state="active"] {
+		background: var(--light);
+		color: var(--dark);
+		border: 1px solid var(--light);
+	}
+
+	&._button_primary[data-state="active"] {
+		background: var(--primary);
+		color: var(--foreground);
+		border: 1px solid var(--primary);
+
+		&[data-state="active"]:hover {
+			color: var(--primary);
+		}
+	}
+
+	&._clip_path {
+		border: none;
+		background: transparent;
+		color: var(--foreground);
+		font-size: 1rem;
+		padding: 0 1.25rem;
+		height: 38px;
+		border-radius: 40px;
+		transition: color 0.3s;
+
+		&[data-state="active"] {
+			background: transparent;
+			border: none;
+		}
+
+		&:hover:not([data-state="active"]) {
+			color: var(--primary);
+		}
+	}
+
+	&._overlay_tab {
+		color: var(--dark) !important;
+		border: none !important;
+		background: transparent !important;
+		opacity: 1 !important;
+
+		&::after {
+			display: none !important;
+		}
+	}
+}

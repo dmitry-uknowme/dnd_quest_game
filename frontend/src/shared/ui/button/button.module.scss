@@ -1,0 +1,108 @@
+.btn {
+	font-family: "Montserrat";
+	font-weight: 600;
+	font-size: 1rem;
+	line-height: 120%;
+	// width: fit-content;
+	height: 2.5rem;
+	padding: 0 1.125rem;
+	border-radius: 1.125rem;
+	display: flex;
+	justify-content: center;
+	gap: 1rem;
+	align-items: center;
+	transition: all 0.3s;
+}
+
+.btn:not(:disabled) {
+	cursor: pointer;
+}
+
+.dark {
+	color: var(--light);
+	background: var(--dark);
+
+	&:hover,
+	&:active {
+		color: var(--light);
+		background: var(--primary);
+	}
+}
+
+.light {
+	background: var(--light);
+	color: var(--dark);
+
+	&:hover,
+	&:active {
+		color: var(--light);
+		background: var(--primary);
+	}
+}
+
+.light_icon {
+	background: var(--light);
+	color: var(--dark);
+
+	&:hover,
+	&:active {
+		background: var(--dark);
+		color: var(--light);
+	}
+}
+
+.primary {
+	color: var(--light);
+	background: var(--primary);
+
+	&:hover,
+	&:active {
+		color: var(--light);
+	}
+}
+
+.telegram {
+	color: var(--light);
+	// background: var(--primary);
+	opacity: 0.7;
+	border-radius: 50%;
+	width: 4.375rem;
+	height: 4.375rem;
+	background: rgba(248, 248, 248, 0.1);
+	display: flex;
+	justify-content: center;
+	align-items: center;
+
+	&:hover,
+	&:active {
+		background: rgba(248, 248, 248, 0.2);
+		// opacity: 1;
+		color: var(--light);
+	}
+}
+
+.linkLight {
+	color: var(--primary);
+	letter-spacing: 1px;
+	font-size: 1.125rem;
+	font-weight: 400;
+	height: 1.875rem;
+	padding: 0 0.5rem;
+
+	&:hover, &._hover,
+	&:active {
+		background: rgba(216, 216, 216, 0.1);
+		color: var(--light);
+	}
+}
+
+.pdfDownload {
+	display: flex;
+	align-items: center;
+	color: var(--primary);
+	gap: 0.5rem;
+	letter-spacing: 1px;
+	font-size: 1.125rem;
+	line-height: 120%;
+	cursor: pointer;
+}

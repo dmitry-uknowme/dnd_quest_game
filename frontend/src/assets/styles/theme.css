@@ -1,0 +1,200 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+
+/* @custom-variant dark (&:is(.dark *)); */
+
+:root {
+	/* Primary */
+	--primary-500: #B350FF;
+	--primary: var(--primary-500);
+	/* --primary-foreground: var(--primary-200); */
+	/* Primary */
+
+	/* Secondary */
+	--secondary-500: #3063DD;
+	--secondary: var(--secondary-500);
+	/* Secondary */
+
+    /* Dark */ 
+    --dark-500: #1A1C24;
+	--dark-400: #1E212B;
+	--dark-300: #59595E;
+	--dark-200: #B5B5BF;
+    --dark: var(--dark-500);
+	--dark-foreground: var(--dark-200);
+    /* Dark */
+
+    /* Light */ 
+    --light: #F8F8F8;
+    /* Light */
+
+	/* Success */
+	--success-100: #e9ffee;
+	--success-200: #c7ffd3;
+	--success-300: #93faa9;
+	--success-400: #61e899;
+	--success-500: #2a8e44;
+
+	--success: var(--success-500);
+	--success-foreground: var(--success-200);
+	/* Success */
+
+	/* Destructive */
+	--destructive-100: #fff2f4;
+	--destructive-200: #ffcdd5;
+	--destructive-300: #ff8a9d;
+	--destructive-400: #ff5b76;
+	--destructive-500: #ff3153;
+
+	--destructive: var(--destructive-500);
+	--destructive-foreground: var(--destructive-100);
+	/* Destructive */
+
+    /* Background colors */
+	--background: var(--dark);
+	--card: var(--dark-400);
+	--popover: var(--dark-400);
+	/* Background colors */
+
+	/* Text colors */
+	--foreground: var(--light);
+	--card-foreground: var(--foreground);
+	--popover-foreground: var(--foreground);
+	/* Text colors */
+
+    /* Helper */
+	--neutral-foreground: var(--gray-100);
+	--muted: var(--gray-100);
+	--muted-foreground: var(--dark-300);
+	/* --border: var(--dark-200); */
+	--border: #292B33;
+	--input: var(--dark-200);
+	--ring: var(--secondary-400);
+	/* Helper */
+
+	/* Gradient */
+	--main-gradient: linear-gradient(
+		to right,
+		var(--success-100) 0%,
+		var(--secondary-100) 30%,
+		var(--destructive-foreground) 69%,
+		var(--secondary-100) 100%
+	);
+	/* Gradient */
+
+	/* Shadow */
+	--main-shadow: 0px 2px 18px -4px #002d8233;
+	/* Shadow */
+
+	/* Radius */
+	--radius-xs: 0.25rem;
+	--radius-sm: 0.5rem;
+	--radius-md: 1rem;
+	--radius-lg: 1.5rem;
+	--radius-xl: 2rem;
+	/* Radius */
+
+	--chart-1: oklch(0.646 0.222 41.116);
+	--chart-2: oklch(0.6 0.118 184.704);
+	--chart-3: oklch(0.398 0.07 227.392);
+	--chart-4: oklch(0.828 0.189 84.429);
+	--chart-5: oklch(0.769 0.188 70.08);
+}
+
+@theme {
+	/* Backgrounds */
+	--color-background: var(--background);
+	--color-card: var(--card);
+	--color-popover: var(--popover);
+
+	/* Text */
+	--color-foreground: var(--foreground);
+	--color-card-foreground: var(--card-foreground);
+	--color-popover-foreground: var(--popover-foreground);
+
+	/* Gray */
+	--color-gray-100: var(--gray-100);
+	--color-gray-200: var(--gray-200);
+	--color-gray-300: var(--gray-300);
+	--color-gray-400: var(--gray-400);
+	--color-gray-500: var(--gray-500);
+	--color-gray-600: var(--gray-600);
+	--color-gray-700: var(--gray-700);
+
+	/* Helper colors */
+	--color-muted: var(--muted);
+	--color-muted-foreground: var(--muted-foreground);
+	--color-input: var(--input);
+	--color-border: var(--border);
+	--color-ring: var(--ring);
+	--color-accent: var(--accent);
+	--color-accent-foreground: var(--accent-foreground);
+
+	/* Primary */
+	--color-primary-100: var(--primary-100);
+	--color-primary-200: var(--primary-200);
+	--color-primary-300: var(--primary-300);
+	--color-primary-400: var(--primary-400);
+	--color-primary-500: var(--primary-500);
+	--color-primary-600: var(--primary-600);
+	--color-primary-700: var(--primary-700);
+	--color-primary: var(--primary);
+	--color-primary-foreground: var(--primary-foreground);
+
+	/* Dark */
+	--color-dark: var(--dark);
+	--color-dark-foreground: var(--dark-foreground);
+
+	/* Light */
+	--color-light: var(--light);
+
+	/* Secondary */
+	--color-secondary-100: var(--secondary-100);
+	--color-secondary-200: var(--secondary-200);
+	--color-secondary-300: var(--secondary-300);
+	--color-secondary-400: var(--secondary-400);
+	--color-secondary-500: var(--secondary-500);
+	--color-secondary: var(--secondary);
+	--color-secondary-foreground: var(--secondary-foreground);
+
+	/* Success */
+	--color-success-100: var(--success-100);
+	--color-success-200: var(--success-200);
+	--color-success-300: var(--success-300);
+	--color-success-400: var(--success-400);
+	--color-success-500: var(--success-500);
+	--color-success: var(--success);
+	--color-success-foreground: var(--success-foreground);
+
+	/* Destructive */
+	--color-destructive-100: var(--destructive-100);
+	--color-destructive-200: var(--destructive-200);
+	--color-destructive-300: var(--destructive-300);
+	--color-destructive-400: var(--destructive-400);
+	--color-destructive-500: var(--destructive-500);
+	--color-destructive: var(--destructive);
+	--color-destructive-foreground: var(--destructive-foreground);
+
+	/* Radius */
+	--radius-xs: var(--radius-xs);
+	--radius-sm: var(--radius-sm);
+	--radius-md: var(--radius-md);
+	--radius-lg: var(--radius-lg);
+	--radius-xl: var(--radius-xl);
+
+	/* Charts */
+	--color-chart-1: var(--chart-1);
+	--color-chart-2: var(--chart-2);
+	--color-chart-3: var(--chart-3);
+	--color-chart-4: var(--chart-4);
+	--color-chart-5: var(--chart-5);
+
+	--color-sidebar: var(--sidebar);
+	--color-sidebar-foreground: var(--sidebar-foreground);
+	--color-sidebar-primary: var(--sidebar-primary);
+	--color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+	--color-sidebar-accent: var(--sidebar-accent);
+	--color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+	--color-sidebar-border: var(--sidebar-border);
+	--color-sidebar-ring: var(--sidebar-ring);
+}
