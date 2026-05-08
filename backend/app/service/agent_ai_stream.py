@@ -17,6 +17,7 @@ from pydantic import BaseModel
 from database.models import Agent
 from service.tokenizer import Tokenizer
 from utils.log_route import log_route
+from fastapi import HTTPException
 
 CHAT_AI_KEY = config_dict.CHAT_AI_KEY
 
@@ -85,6 +86,15 @@ def agent_ai(messages, model, temperature:Optional[float]=None, response_format:
     
     data = response.json()
     choices = data.get("choices", [])
+    
+    if (not bool(choices) or len(choices)<= 0):
+        if (data.get("error", None) and data.get("error").get("message")):
+            log_route(endpoint=url, status=500, data={}, error=data.get("error").get("message")) 
+            raise HTTPException(status_code=500, detail=data.get("error").get("message"))
+        else:
+            log_route(endpoint=url, status=500, data={}, error=f"Unknown error {data}")
+            raise HTTPException(status_code=500, detail=f"Unknown error {data}")
+
     content  = choices[0]["message"]["content"]
     data = content.replace('\\"', '"')
    
