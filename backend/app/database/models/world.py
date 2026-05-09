@@ -1,9 +1,15 @@
+from typing import TYPE_CHECKING
 from sqlalchemy import String, ForeignKey, Float
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 from sqlalchemy.dialects.postgresql import UUID, JSONB
 import uuid
 
 from .base import Base, TableNameMixin, TimestampMixin
+
+if TYPE_CHECKING:
+    from .world import World
+    from .location import Location
+    from .playroom import Playroom
 
 class World(Base, TableNameMixin, TimestampMixin):
     # id: Mapped[str] = mapped_column(String, primary_key=True, default=lambda: str(uuid.uuid4()))
@@ -23,7 +29,12 @@ class World(Base, TableNameMixin, TimestampMixin):
     world_rules: Mapped[str] = mapped_column(String, nullable=False)
     world_constraints: Mapped[str] = mapped_column(String, nullable=False)
 
+    playrooms: Mapped[list["Playroom"]] = relationship(
+        "Playroom",
+        back_populates="world"
+    )
 
-    
-
-    
+    locations: Mapped[list["Location"]] = relationship(
+        "Location",
+        back_populates="world"
+    )

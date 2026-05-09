@@ -1,12 +1,15 @@
-
-from sqlalchemy import String, ForeignKey, Float
+from typing import TYPE_CHECKING
+from sqlalchemy import String, ForeignKey, Float, Integer
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 from sqlalchemy.dialects.postgresql import UUID, JSONB
 import uuid
 
-from .world import World
 from .base import Base, TableNameMixin, TimestampMixin
 from .constants import STATUS_ACTIVE
+
+if TYPE_CHECKING:
+    from .world import World
+    from .location import Location
 
 class Playroom(Base, TableNameMixin, TimestampMixin):
     id: Mapped[uuid.UUID] = mapped_column(
@@ -26,4 +29,19 @@ class Playroom(Base, TableNameMixin, TimestampMixin):
         ForeignKey("worlds.id"),
         nullable=True
     )
-    world: Mapped[World] = relationship("World")
+    world: Mapped["World"] = relationship(
+        "World",
+        back_populates="playrooms"
+    )
+
+    active_location_id: Mapped[uuid.UUID] = mapped_column(
+        UUID(as_uuid=True),
+        ForeignKey("locations.id"),
+        nullable=True
+    )
+    active_location: Mapped["Location"] = relationship(
+        "Location",
+        foreign_keys=[active_location_id]
+    )
+
+    active_turn_number: Mapped[int] = mapped_column(Integer, nullable=True, default=1)
