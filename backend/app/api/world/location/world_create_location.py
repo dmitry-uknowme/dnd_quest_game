@@ -8,7 +8,7 @@ from sqlalchemy import and_, func, or_, select, desc
 from sqlalchemy.ext.asyncio import AsyncSession 
 from database.db_helper import db_helper
 
-from service.agent_ai_stream import agent_make_history, agent_ai_stream, agent_ai
+# from service.agent_ai_stream import agent_make_history, agent_ai_stream, agent_ai
 from utils.log_route import log_route
 from database.models import Agent, World
 from .schemas.location import CreateLocationAgentResponseSchema
@@ -35,9 +35,9 @@ async def world_create_location(
             "conflict_core": world.conflict_core,
             "world_constraints": world.world_constraints
         }
-        world_json = json.dumps(world_json, ensure_ascii=False)
-        messages, sum_tokens, max_output_tokens = await agent_make_history(agent=agent, messages=[{"role": "user", "content": world_json}])
-        response = agent_ai(messages, model="nvidia/nemotron-3-super-120b-a12b:free", temperature=None, response_model=CreateLocationAgentResponseSchema, response_format=agent.response_format, max_output_tokens=2000, subscription_tokens_left=0)
+        # world_json = json.dumps(world_json, ensure_ascii=False)
+        # messages, sum_tokens, max_output_tokens = await agent_make_history(agent=agent, messages=[{"role": "user", "content": f"**WORLD JSON**: {world_json}"}])
+        # response = agent_ai(messages, model="nvidia/nemotron-3-super-120b-a12b:free", temperature=None, response_model=CreateLocationAgentResponseSchema, response_format=agent.response_format, max_output_tokens=2000, subscription_tokens_left=0)
         
         # new_world = World(
         #     id=str(uuid.uuid4()),
@@ -54,7 +54,7 @@ async def world_create_location(
         # )
         # session.add(new_world)
         # await session.commit()
-        return response
+        # return response
     except HTTPException as e:
         log_route(endpoint=f"/playroom/world", status=e.status_code, data={"world_id": world_id}, error=e)
         raise e
