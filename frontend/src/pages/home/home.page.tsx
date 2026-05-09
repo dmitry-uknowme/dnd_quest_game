@@ -1,20 +1,11 @@
 import MainLayout from "@/shared/ui/layout/MainLayout";
-import { PartySidebar } from "@/widgets/PartySidebar/ui/PartySidebar";
-import { TimelineSidebar } from "@/widgets/TimelineSidebar/ui/TimelineSidebar";
-import { GameHeader } from "@/widgets/GameHeader/ui/GameHeader";
-import { StoryBoard } from "@/widgets/StoryBoard/ui/StoryBoard";
-import { ActionPanel } from "@/widgets/ActionPanel/ui/ActionPanel";
+import { CreatePlayroomForm } from "@/features/playroom/create-playroom/ui/CreatePlayroomForm";
 
 const HomePage = () => {
   return (
-    <MainLayout
-      leftSidebar={<PartySidebar />}
-      rightSidebar={<TimelineSidebar />}
-      header={<GameHeader />}
-    >
-      <div className="space-y-8">
-        <StoryBoard />
-        <ActionPanel />
+    <MainLayout>
+      <div className="h-full flex flex-col items-center justify-center mt-20">
+        <CreatePlayroomForm />
       </div>
     </MainLayout>
   );

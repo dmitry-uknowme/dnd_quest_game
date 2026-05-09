@@ -30,7 +30,7 @@ const Navbar: React.FC<NavbarProps> = ({
       ref={ref}
     >
       <Link to="/#intro">
-        <Logo className={styles.logo} alt="ItUp" />
+        <Logo className={styles.logo} />
       </Link>
       <ul className={styles.navbarItems}>
         {navItems.map((item) => (

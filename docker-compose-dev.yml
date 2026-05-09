@@ -11,6 +11,9 @@ services:
       - ./huggingface:/huggingface
     ports:
       - "5000:8000"
+    depends_on:
+      postgres:
+        condition: service_healthy
 
   postgres:
     image: postgres:15

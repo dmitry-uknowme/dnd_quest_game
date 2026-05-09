@@ -1,11 +1,12 @@
-import Button from "@/shared/ui/button/button";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/shared/ui/tabs";
 import { Outlet } from "react-router-dom";
+import { MainProvider } from "./provider/main-provider";
 
 const App = () => {
   return (
     <div className="app">
-      <Outlet />
+      <MainProvider>
+        <Outlet />
+      </MainProvider>
     </div>
   );
 };
