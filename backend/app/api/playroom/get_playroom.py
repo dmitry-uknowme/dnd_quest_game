@@ -15,7 +15,7 @@ from utils.log_route import log_route
 
 router = APIRouter()
 
-@router.get("/{playroom_id}")
+@router.get("/playrooms/{playroom_id}")
 async def get_playroom(
     playroom_id: str = Path(..., description="Playroom id"),
     session: AsyncSession = Depends(db_helper.session_dependency),

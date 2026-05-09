@@ -8,11 +8,12 @@ from database.models.playroom import Playroom
 from database.models.constants import STATUS_ACTIVE
 
 async def get_playroom(db: AsyncSession, playroom_id: str) -> Playroom | None:
-    playroom = (await db.execute(select(Playroom).options(selectinload(Playroom.world)).where(Playroom.id == playroom_id))).scalar_one_or_none()
-    if not playroom:
-        raise HTTPException(status_code=404, detail="Playroom not found")
-
+    playroom = (await db.execute(select(Playroom).options(selectinload(Playroom.world),selectinload(Playroom.active_location)).where(Playroom.id == playroom_id))).scalar_one_or_none()
     return playroom
+
+async def get_all_playrooms(db: AsyncSession) -> list[Playroom] | None:
+    playrooms = (await db.execute(select(Playroom).order_by(Playroom.created_at.desc()).options(selectinload(Playroom.world),selectinload(Playroom.active_location)))).scalars().all()
+    return playrooms
 
 async def create_playroom(db: AsyncSession, title: str, leader_id: str) -> Playroom:
     new_playroom = Playroom(
@@ -29,6 +30,12 @@ async def create_playroom(db: AsyncSession, title: str, leader_id: str) -> Playr
 async def playroom_attach_world(db: AsyncSession, playroom_id: str, world_id: str) -> Playroom:
     playroom = await get_playroom(db, playroom_id)
     playroom.world_id = world_id
+    await db.flush()
+    return playroom
+
+async def playroom_attach_active_location(db: AsyncSession, playroom_id: str, location_id: str) -> Playroom:
+    playroom = await get_playroom(db, playroom_id)
+    playroom.active_location_id = location_id
     await db.flush()
     return playroom
 

@@ -15,18 +15,16 @@ from utils.log_route import log_route
 
 router = APIRouter()
 
-@router.post("/playrooms")
-async def create_playroom(
-    body: CreatePlayroomRequestSchema,
+@router.get("/playrooms")
+async def get_playrooms(
     session: AsyncSession = Depends(db_helper.session_dependency),
 ):
     try:
-        playroom = await playroom_service.create_playroom(session, body.title, "123")
-        await session.commit()
-        return playroom
+        playrooms = await playroom_service.get_all_playrooms(session)
+        return playrooms
     except HTTPException as e:
-        log_route(endpoint=f"/playroom", status=e.status_code, data=body, error=e)
+        log_route(endpoint=f"/playroom", status=e.status_code, data={}, error=e)
         raise e
     except Exception as e:
-        log_route(endpoint=f"/playroom", status=500, data=body, error=e)
+        log_route(endpoint=f"/playroom", status=500, data={}, error=e)
         raise HTTPException(status_code=500)

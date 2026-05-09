@@ -4,6 +4,7 @@ from typing import Optional, List
 from uuid import UUID
 
 from service.world.schemas import WorldResponseSchema
+from service.location.schemas import FirstLocationResponseSchema
 
 class CreatePlayroomRequestSchema(BaseModel):
     title: str
@@ -16,4 +17,6 @@ class PlayroomResponseSchema(BaseModel):
     status: str
 
     world: Optional["WorldResponseSchema"]
+    active_location: Optional["FirstLocationResponseSchema"]
+    
     

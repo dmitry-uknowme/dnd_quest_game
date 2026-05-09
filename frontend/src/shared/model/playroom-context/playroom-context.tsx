@@ -26,7 +26,7 @@ export const PlayroomContextProvider = ({
     if (!roomId) return;
 
     wsRef.current = new WebSocket(
-      `ws://localhost:5000/playroom/${roomId}/websocket?token=${token}`,
+      `ws://localhost:5000/playrooms/${roomId}/websocket?token=${token}`,
     );
     const ws = wsRef.current;
     ws.onopen = () => {

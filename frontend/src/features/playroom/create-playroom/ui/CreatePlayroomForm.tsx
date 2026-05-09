@@ -19,21 +19,26 @@ export const CreatePlayroomForm = () => {
   };
 
   return (
-    <div className="flex flex-col items-center gap-8">
+    <div className="bg-card/40 backdrop-blur-md border border-border/50 rounded-2xl p-8 flex flex-col items-center text-center gap-6 shadow-xl h-full justify-center group hover:border-primary/50 transition-all duration-500">
       <GameLoader isLoading={isLoading} text="Создание лобби..." />
-      <div className="text-center space-y-4 max-w-xl">
-        <h1 className="text-5xl font-bold tracking-wider text-white drop-shadow-lg">STORY DUNGEONS</h1>
-        <p className="text-muted-foreground text-lg">
-          Начните новое приключение. Создайте лобби и пригласите друзей.
+      
+      <div className="w-20 h-20 rounded-full bg-primary/10 flex items-center justify-center text-4xl shadow-inner group-hover:scale-110 transition-transform duration-500">
+        🎲
+      </div>
+
+      <div className="space-y-2">
+        <h3 className="text-2xl font-bold text-white tracking-tight">Новое приключение</h3>
+        <p className="text-muted-foreground text-sm max-w-[200px] mx-auto">
+          Создайте новое лобби и станьте мастером своей истории.
         </p>
       </div>
+
       <button
         onClick={handleCreatePlayroom}
         disabled={isLoading}
-        className="px-8 py-4 rounded-xl bg-primary text-white font-bold tracking-wider hover:opacity-90 transition-opacity disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2 shadow-[0_0_20px_var(--color-primary)]"
+        className="w-full py-4 rounded-xl bg-primary text-white font-bold tracking-wider hover:opacity-90 transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2 shadow-[0_0_20px_var(--color-primary)] active:scale-95"
       >
         <span>СОЗДАТЬ ЛОББИ</span>
-        <span>🎲</span>
       </button>
     </div>
   );

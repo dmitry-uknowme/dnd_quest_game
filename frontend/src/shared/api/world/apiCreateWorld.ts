@@ -8,7 +8,7 @@ export interface ApiCreateWorldPayload {
 
 const apiCreateWorld = async (payload: ApiCreateWorldPayload) => {
   const { data } = await apiClient.post<World>(
-    `/api/playroom/${payload.playroom_id}/world`,
+    `/api/playrooms/${payload.playroom_id}/world`,
     payload,
   );
   return data;

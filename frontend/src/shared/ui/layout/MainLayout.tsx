@@ -23,36 +23,51 @@ const MainLayout: React.FC<MainLayoutProps> = ({
     window.scrollTo(0, 0);
   }, [pathname]);
 
+  const hasLeftSidebar = !!leftSidebar;
+  const hasRightSidebar = !!rightSidebar;
+
   return (
     <div
       className={cn(
-        "grid grid-cols-[280px_1fr_280px] grid-rows-[auto_1fr] h-screen bg-background text-foreground overflow-hidden",
+        "grid grid-rows-[auto_1fr] h-screen bg-background text-foreground overflow-hidden",
         className,
       )}
+      style={{
+        gridTemplateColumns: `${hasLeftSidebar ? "280px" : "0px"} 1fr ${hasRightSidebar ? "280px" : "0px"}`,
+      }}
     >
       {/* Header Slot */}
       <header className="col-span-3 h-14 border-b border-border/50 bg-card/40 backdrop-blur-md z-50 flex items-center px-6 justify-between">
         {header || (
-          <div className="font-bold text-primary tracking-wider">
+          <div className="font-bold text-primary tracking-wider uppercase">
             STORY DUNGEONS
           </div>
         )}
       </header>
 
       {/* Left Sidebar Slot */}
-      <aside className="w-[280px] border-r border-border/50 bg-card/40 backdrop-blur-md overflow-y-auto p-4 flex flex-col gap-6 custom-scrollbar">
-        {leftSidebar}
-      </aside>
+      {hasLeftSidebar && (
+        <aside className="w-[280px] border-r border-border/50 bg-card/40 backdrop-blur-md overflow-y-auto p-4 flex flex-col gap-6 custom-scrollbar">
+          {leftSidebar}
+        </aside>
+      )}
 
       {/* Main Content Area */}
-      <main className="flex-1 overflow-y-auto relative p-6 custom-scrollbar bg-[radial-gradient(circle_at_center,rgba(179,80,255,0.05)_0%,transparent_70%)]">
-        <div className="max-w-4xl mx-auto">{children}</div>
+      <main
+        className={cn(
+          "flex-1 overflow-y-auto relative p-6 custom-scrollbar bg-[radial-gradient(circle_at_center,rgba(179,80,255,0.05)_0%,transparent_70%)]",
+          !hasLeftSidebar && !hasRightSidebar && "col-span-3",
+        )}
+      >
+        <div className="max-w-7xl mx-auto h-full">{children}</div>
       </main>
 
       {/* Right Sidebar Slot */}
-      <aside className="w-[280px] border-l border-border/50 bg-card/40 backdrop-blur-md overflow-y-auto p-4 flex flex-col gap-6 custom-scrollbar">
-        {rightSidebar}
-      </aside>
+      {hasRightSidebar && (
+        <aside className="w-[280px] border-l border-border/50 bg-card/40 backdrop-blur-md overflow-y-auto p-4 flex flex-col gap-6 custom-scrollbar">
+          {rightSidebar}
+        </aside>
+      )}
     </div>
   );
 };

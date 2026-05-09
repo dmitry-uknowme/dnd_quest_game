@@ -1,7 +1,9 @@
 import useFetchPlayroom from "@/features/playroom/model/useFetchPlayroom";
+import useStartPlayroom from "@/features/playroom/model/useStartPlayroom";
 import { CreateWorldForm } from "@/features/world/create-world/ui/CreateWorldForm";
 import { PlayroomContext } from "@/shared/model/playroom-context/playroom-context";
 import MainLayout from "@/shared/ui/layout/MainLayout";
+import { GameLoader } from "@/shared/ui/loader/GameLoader";
 import { GameHeader } from "@/widgets/GameHeader/ui/GameHeader";
 import { PartySidebar } from "@/widgets/PartySidebar/ui/PartySidebar";
 import { useContext, useEffect, useRef } from "react";
@@ -13,6 +15,7 @@ const PlayroomPage = () => {
   const { players, setRoomId } = useContext(PlayroomContext);
 
   const { playroomData, isFetching } = useFetchPlayroom();
+  const startPlayroom = useStartPlayroom(playroomData?.id!);
 
   useEffect(() => {
     if (playroomData) {
@@ -20,11 +23,17 @@ const PlayroomPage = () => {
     }
   }, [playroomData]);
 
+  useEffect(() => {
+    if (playroomData && playroomData.status === "STATUS_STARTED")
+      navigate(`/playrooms/${playroomData.id}/game`);
+  }, [playroomData]);
+
   return (
     <MainLayout
       leftSidebar={<PartySidebar players={players} />}
       header={<GameHeader />}
     >
+      <GameLoader isLoading={startPlayroom.isPending} text="Запуск игры..." />
       <div className="flex flex-col items-center justify-center space-y-12 mt-8">
         {!!(playroomData?.world && !isFetching) ? (
           <>
@@ -45,7 +54,7 @@ const PlayroomPage = () => {
 
             <div className="pt-8 border-t border-border/50 w-full flex justify-center">
               <button
-                onClick={() => navigate(`/playrooms/${playroomData?.id}/game`)}
+                onClick={() => startPlayroom.start(playroomData.id)}
                 className="px-8 py-4 rounded-xl bg-success text-white font-bold tracking-wider hover:bg-success/80 transition-colors shadow-[0_0_20px_var(--color-success)]"
               >
                 ЗАПУСТИТЬ ИГРУ ⚔️

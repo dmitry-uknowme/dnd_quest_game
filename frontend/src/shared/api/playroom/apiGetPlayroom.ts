@@ -4,7 +4,7 @@ import { PlayroomDetail } from "@/entities/playroom/model/playroom";
 
 const apiGetPlayroom = async (playroomId: string) => {
   const { data } = await apiClient.get<PlayroomDetail>(
-    `/api/playroom/${playroomId}`,
+    `/api/playrooms/${playroomId}`,
   );
   return data;
 };

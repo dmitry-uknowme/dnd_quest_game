@@ -15,7 +15,7 @@ from utils.log_route import log_route
 
 router = APIRouter()
 
-@router.websocket("/{room_id}/websocket")
+@router.websocket("/playrooms/{room_id}/websocket")
 async def playroom_websocket(
     websocket: WebSocket,
     room_id: str = Path(..., description="Room id"),
