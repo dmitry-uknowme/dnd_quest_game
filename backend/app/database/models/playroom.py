@@ -22,7 +22,7 @@ class Playroom(Base, TableNameMixin, TimestampMixin):
     )
     title: Mapped[str] = mapped_column(String, nullable=False)
     status: Mapped[str] = mapped_column(String, nullable=False, default=STATUS_ACTIVE)
-    active_turn_number: Mapped[int] = mapped_column(Integer, nullable=True, default=1)
+    active_turn_number: Mapped[int] = mapped_column(Integer, nullable=True)
 
     leader_id: Mapped[uuid.UUID] = mapped_column(
         UUID(as_uuid=True),
@@ -54,12 +54,12 @@ class Playroom(Base, TableNameMixin, TimestampMixin):
         foreign_keys=[active_location_id]
     )
 
-    turns: Mapped[List["MasterTurn"]] = relationship(
+    master_turns: Mapped[List["MasterTurn"]] = relationship(
         "MasterTurn",
         back_populates="playroom"
     )
 
-    players: Mapped[List["User"]] = relationship(
-        "User",
-        back_populates="playrooms"
-    )
+    # players: Mapped[List["User"]] = relationship(
+    #     "User",
+    #     back_populates="playrooms"
+    # )

@@ -1,3 +1,4 @@
+from sqlalchemy.orm import selectinload
 from typing import List
 from sqlalchemy import select
 import uuid
@@ -5,7 +6,12 @@ from database.models.location import Location
 from sqlalchemy.ext.asyncio import AsyncSession 
 
 async def get_location(db: AsyncSession, location_id: str) -> Location | None:
-    return (await db.execute(select(Location).where(Location.id == location_id))).scalar_one_or_none()
+    return (await db.execute(
+        select(Location)
+        .options(
+            selectinload(Location.world),
+        )
+        .where(Location.id == location_id))).scalar_one_or_none()
 
 async def create_location(
     db: AsyncSession, 

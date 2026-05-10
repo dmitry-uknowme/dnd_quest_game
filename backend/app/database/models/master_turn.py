@@ -19,8 +19,8 @@ class MasterTurn(Base, TableNameMixin, TimestampMixin):
         default=uuid.uuid4
     )
     number: Mapped[int] = mapped_column(Integer, nullable=False)
-    result_text: Mapped[str] = mapped_column(String, nullable=False)
-    state_updates: Mapped[dict] = mapped_column(JSONB, nullable=False)
+    result_text: Mapped[str] = mapped_column(String, nullable=True)
+    state_updates: Mapped[dict] = mapped_column(JSONB, nullable=True)
     
     playroom_id: Mapped[uuid.UUID] = mapped_column(
         UUID(as_uuid=True),
@@ -46,4 +46,6 @@ class MasterTurn(Base, TableNameMixin, TimestampMixin):
         "PlayerTurn",
         back_populates="master_turn"
     )
+
+    answer_variants: Mapped[List[str]] = mapped_column(JSONB, nullable=True, default=list)
     

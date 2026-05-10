@@ -18,5 +18,6 @@ class PlayroomResponseSchema(BaseModel):
 
     world: Optional["WorldResponseSchema"]
     active_location: Optional["FirstLocationResponseSchema"]
+    active_turn_number: int
     
     

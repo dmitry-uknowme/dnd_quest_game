@@ -24,7 +24,7 @@ async def get_world(db: AsyncSession, world_id: str) -> WorldResponseSchema | No
 
 async def create_ai_world_by_title(db: AsyncSession, title: str) -> WorldResponseSchema:
     agent = await agent_repository.get_agent_by_name(db, "WORLD_CREATE_AGENT")
-    messages, sum_tokens, max_output_tokens = await agent_make_history(agent=agent, messages=[{"role": "user", "content": f"Сгенерируй мир для игры по этому описанию: {title}"}])
+    messages, sum_tokens, max_output_tokens = await agent_make_history(agent=agent, messages=[{"role": "user", "content": f"**Описание мира**:\n\n {title}"}])
     response = agent_ai(messages, model="nvidia/nemotron-3-super-120b-a12b:free", temperature=None, response_model=CreateWorldAgentResponseSchema, response_format=agent.response_format, max_output_tokens=2000, subscription_tokens_left=0)
 
     new_world = await world_repository.create_world(

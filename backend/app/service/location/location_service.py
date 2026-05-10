@@ -2,23 +2,24 @@ from service.world import world_service
 from sqlalchemy.ext.asyncio import AsyncSession
 from fastapi import HTTPException
 import uuid
+import json
 from sqlalchemy.orm import Session
 
 from database.models import Location
 
 from service.agent_ai_service import agent_ai, agent_make_history
 from repository import agent_repository, location_repository
-from service.playroom import playroom_service
-from .schemas import FirstLocationResponseSchema, CreateLocationAgentResponseSchema
+from service.playroom.playroom_service import playroom_attach_active_location
+from .schemas import FirstLocationResponseSchema, LocationResponseSchema, CreateLocationAgentResponseSchema
 
 
-async def get_location(db: AsyncSession, location_id: str) -> Location | None:
+async def get_location(db: AsyncSession, location_id: str) -> LocationResponseSchema | None:
     location = await location_repository.get_location(db, location_id)
 
     if not location:
         raise HTTPException(status_code=404, detail="Location not found")
-    return location
-
+    return LocationResponseSchema.model_validate(location)
+    
 async def create_ai_first_location(db: AsyncSession, playroom_id: str, world_id: str) -> FirstLocationResponseSchema:
     agent = await agent_repository.get_agent_by_name(db, "LOCATION_CREATE_AGENT")
     world = await world_service.get_world(db, world_id)
@@ -31,7 +32,9 @@ async def create_ai_first_location(db: AsyncSession, playroom_id: str, world_id:
         "conflict_core": world.conflict_core,
         "world_constraints": world.world_constraints
     }
-    messages, sum_tokens, max_output_tokens = await agent_make_history(agent=agent, messages=[{"role": "user", "content": f"**WORLD JSON**: {world_json}"}])    
+    world_json = json.dumps(world_json, ensure_ascii=False)
+
+    messages, sum_tokens, max_output_tokens = await agent_make_history(agent=agent, messages=[{"role": "user", "content": f"**WORLD JSON**:\n\n {world_json}"}])    
     response = agent_ai(messages, model="nvidia/nemotron-3-super-120b-a12b:free", temperature=None, response_model=CreateLocationAgentResponseSchema, response_format=agent.response_format, max_output_tokens=2000, subscription_tokens_left=0)
 
     new_location = await location_repository.create_location(
@@ -42,7 +45,7 @@ async def create_ai_first_location(db: AsyncSession, playroom_id: str, world_id:
         answer_variants=response.choice_variants
     )
 
-    await playroom_service.playroom_attach_active_location(db, playroom_id, new_location.id)
+    await playroom_attach_active_location(db, playroom_id, new_location.id)
 
     result = FirstLocationResponseSchema(
         id=new_location.id,

@@ -8,6 +8,7 @@ from .base import Base, TableNameMixin, TimestampMixin
 
 if TYPE_CHECKING:
     from .world import World
+    from .master_turn import MasterTurn
 
 class Location(Base, TableNameMixin, TimestampMixin):
     id: Mapped[uuid.UUID] = mapped_column(
@@ -29,4 +30,9 @@ class Location(Base, TableNameMixin, TimestampMixin):
     world: Mapped["World"] = relationship(
         "World",
         back_populates="locations"
+    )
+
+    master_turns: Mapped[List["MasterTurn"]] = relationship(
+        "MasterTurn",
+        back_populates="location"
     )

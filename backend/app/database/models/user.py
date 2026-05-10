@@ -24,11 +24,11 @@ class User(Base, TableNameMixin, TimestampMixin):
 
     playrooms: Mapped[List["Playroom"]] = relationship(
         "Playroom",
-        back_populates="user"
+        back_populates="leader"
     )
 
     player_turns: Mapped[List["PlayerTurn"]] = relationship(
         "PlayerTurn",
-        back_populates="user"
+        back_populates="player"
     )
     

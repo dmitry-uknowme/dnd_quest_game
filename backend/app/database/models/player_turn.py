@@ -16,9 +16,9 @@ class PlayerTurn(Base, TableNameMixin, TimestampMixin):
         primary_key=True,
         default=uuid.uuid4
     )
-    number: Mapped[int] = mapped_column(Integer, nullable=False)
+    number: Mapped[int] = mapped_column(Integer, nullable=True)
     input_text: Mapped[str] = mapped_column(String, nullable=False)
-    state_updates: Mapped[dict] = mapped_column(JSONB, nullable=False)
+    state_updates: Mapped[dict] = mapped_column(JSONB, nullable=True)
 
     player_id: Mapped[uuid.UUID] = mapped_column(
         UUID(as_uuid=True),

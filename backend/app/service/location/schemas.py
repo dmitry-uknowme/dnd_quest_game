@@ -12,14 +12,21 @@ class CreateLocationAgentResponseSchema(BaseModel):
     choice_variants: List[str]
 
 
-class FirstLocationResponseSchema(BaseModel):
+class LocationResponseSchema(BaseModel):
     model_config = {"from_attributes": True}
 
     id: UUID
     title: str
     description: str
     type: str
+    world: Optional[WorldResponseSchema] = None
+    
+
+class FirstLocationResponseSchema(LocationResponseSchema):
+    model_config = {"from_attributes": True}
+
     answer_variants: Optional[List[str]] = Field(default_factory=list)
+
 
     
     
