@@ -5,6 +5,7 @@ from sqlalchemy.ext.declarative import declared_attr
 from sqlalchemy.orm import DeclarativeBase
 from sqlalchemy.orm import Mapped, mapped_column
 from sqlalchemy.sql.functions import func
+import re
 
 
 class Base(DeclarativeBase):
@@ -14,7 +15,8 @@ class Base(DeclarativeBase):
 class TableNameMixin:
     @declared_attr.directive
     def __tablename__(cls) -> str:
-        return cls.__name__.lower() + "s"
+        name = re.sub(r"(?<!^)(?=[A-Z])", "_", cls.__name__).lower()
+        return f"{name}s"
 
 
 class TimestampMixin:

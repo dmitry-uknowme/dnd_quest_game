@@ -7,7 +7,8 @@ from sqlalchemy.orm import Session
 from database.models import Location
 
 from service.agent_ai_service import agent_ai, agent_make_history
-from repository import agent_repository, location_repository, playroom_repository
+from repository import agent_repository, location_repository
+from service.playroom import playroom_service
 from .schemas import FirstLocationResponseSchema, CreateLocationAgentResponseSchema
 
 
@@ -18,7 +19,6 @@ async def get_location(db: AsyncSession, location_id: str) -> Location | None:
         raise HTTPException(status_code=404, detail="Location not found")
     return location
 
-# TODO: убрать repository сторонние из зависимостей, использовать только services
 async def create_ai_first_location(db: AsyncSession, playroom_id: str, world_id: str) -> FirstLocationResponseSchema:
     agent = await agent_repository.get_agent_by_name(db, "LOCATION_CREATE_AGENT")
     world = await world_service.get_world(db, world_id)
@@ -42,7 +42,7 @@ async def create_ai_first_location(db: AsyncSession, playroom_id: str, world_id:
         answer_variants=response.choice_variants
     )
 
-    await playroom_repository.playroom_attach_active_location(db, playroom_id, new_location.id)
+    await playroom_service.playroom_attach_active_location(db, playroom_id, new_location.id)
 
     result = FirstLocationResponseSchema(
         id=new_location.id,

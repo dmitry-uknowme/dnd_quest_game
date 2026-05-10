@@ -18,14 +18,13 @@ const PlayroomPage = () => {
   const startPlayroom = useStartPlayroom(playroomData?.id!);
 
   useEffect(() => {
-    if (playroomData) {
+    if (!playroomData) return;
+
+    if (playroomData.status === "STATUS_STARTED") {
+      navigate(`/playrooms/${playroomData.id}/game`, { replace: true });
+    } else {
       setRoomId(playroomData.id);
     }
-  }, [playroomData]);
-
-  useEffect(() => {
-    if (playroomData && playroomData.status === "STATUS_STARTED")
-      navigate(`/playrooms/${playroomData.id}/game`);
   }, [playroomData]);
 
   return (
