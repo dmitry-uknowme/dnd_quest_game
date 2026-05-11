@@ -36,7 +36,13 @@ async def player_make_turn(db: AsyncSession, playroom_id: str, player_id: str, i
     master_turn = await master_turn_repository.get_master_turn_by_number(db, playroom_id, active_turn_number)
     
     if not master_turn:
-        master_turn = await master_turn_repository.create_master_turn(db, playroom_id, location_id, active_turn_number)
+        master_turn = await master_turn_repository.create_master_turn(db, playroom_id, location_id, active_turn_number - 1)
+
+    prev_master_turn = await master_turn_repository.get_master_turn_by_number(db, playroom_id, master_turn.number - 1)
+    prev_result_text = None
+
+    if prev_master_turn:
+        prev_result_text = prev_master_turn.result_text
 
 
     # next_turn_number = last_master_turn_number + 1
@@ -45,11 +51,11 @@ async def player_make_turn(db: AsyncSession, playroom_id: str, player_id: str, i
     # new_master_turn = await master_turn_repository.create_master_turn(db, playroom_id, location_id, next_turn_number)
     await player_turn_repository.create_player_turn(db, player_id, master_turn.id, input_text)
 
-    finished_master_turn = await handle_master_ai_turn(db, master_turn.id)
+    finished_master_turn = await handle_master_ai_turn(db, master_turn.id, prev_result_text)
     await db.commit()
     return MasterTurnResponseSchema.model_validate(finished_master_turn)    
 
-async def handle_master_ai_turn(db: AsyncSession, master_turn_id: str) -> MasterTurnResponseSchema:
+async def handle_master_ai_turn(db: AsyncSession, master_turn_id: str, prev_result_text: str | None) -> MasterTurnResponseSchema:
     master_turn = await master_turn_repository.get_master_turn(db, master_turn_id)
     players_turns = await master_turn_repository.get_players_turns_by_master_turn_id(db, master_turn_id)
     players_turns =  [PlayerTurnResponseSchema.model_validate(player_turn) for player_turn in players_turns]
@@ -82,7 +88,11 @@ async def handle_master_ai_turn(db: AsyncSession, master_turn_id: str) -> Master
     player_turns_text = "\n".join([f"{turn.player.username}: {turn.input_text}" for turn in players_turns])
     player_turns_text = json.dumps(player_turns_text, ensure_ascii=False)
 
-    messages, sum_tokens, max_output_tokens = await agent_make_history(agent=agent, messages=[{"role": "user", "content": f"**WORLD JSON**: {world_json}\n\n**LOCATION JSON**: {location_json}\n\n**PLAYER TURNS**: {player_turns_text}"}])    
+    user_prompt = f"**WORLD JSON**: {world_json}\n\n**LOCATION JSON**: {location_json}\n\n**PLAYER TURNS**: {player_turns_text}"
+    if prev_result_text:
+        user_prompt += f"\n\n**PREVIOUS TURN RESULT**: {prev_result_text}"
+
+    messages, sum_tokens, max_output_tokens = await agent_make_history(agent=agent, messages=[{"role": "user", "content": user_prompt}])    
     response = agent_ai(messages, model="nvidia/nemotron-3-super-120b-a12b:free", temperature=None, response_model=TurnHandlerAgentResponseSchema, response_format=agent.response_format, max_output_tokens=2000, subscription_tokens_left=0)
 
     master_turn = await master_turn_repository.finish_master_turn(db, master_turn_id, response.turn_summary, response.choice_variants, response.dict())

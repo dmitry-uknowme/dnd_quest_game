@@ -55,7 +55,7 @@ const MainLayout: React.FC<MainLayoutProps> = ({
       {/* Main Content Area */}
       <main
         className={cn(
-          "flex-1 overflow-y-auto relative p-6 custom-scrollbar bg-[radial-gradient(circle_at_center,rgba(179,80,255,0.05)_0%,transparent_70%)]",
+          "flex-1 overflow-y-auto overflow-x-hidden relative p-6 custom-scrollbar bg-[radial-gradient(circle_at_center,rgba(179,80,255,0.05)_0%,transparent_70%)]",
           !hasLeftSidebar && !hasRightSidebar && "col-span-3",
         )}
       >

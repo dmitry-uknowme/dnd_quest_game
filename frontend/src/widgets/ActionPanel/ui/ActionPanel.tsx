@@ -2,10 +2,10 @@ import { Location } from "@/entities/location";
 
 interface ActionPanelProps {
   location: Location;
+  onSubmitAction: (action: string) => void;
 }
 
-export const ActionPanel = ({ location }: ActionPanelProps) => {
-  console.log({ location });
+export const ActionPanel = ({ location, onSubmitAction }: ActionPanelProps) => {
   return (
     <div className="pt-8 border-t border-border/50 space-y-6">
       <div className="grid grid-cols-2 gap-4">
@@ -13,6 +13,7 @@ export const ActionPanel = ({ location }: ActionPanelProps) => {
           <button
             key={idx}
             className="flex flex-col items-start gap-1 p-4 rounded-xl bg-primary/10 border border-primary/30 hover:bg-primary/20 transition-all hover:scale-[1.02] text-left"
+            onClick={() => onSubmitAction(item)}
           >
             <span className="text-primary text-[10px] font-bold uppercase tracking-widest">
               Действие {idx + 1}
